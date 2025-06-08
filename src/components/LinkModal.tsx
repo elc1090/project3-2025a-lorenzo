@@ -3,7 +3,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { addLink, updateLink } from "@/lib/firestore";
+import { addLink, updateLink, deleteLink } from "@/lib/firestore";
 
 interface Category {
   id: string;
@@ -23,20 +23,30 @@ interface Props {
   categories: Category[];
   itemToEdit?: LinkItem;
   onSuccess?: () => void;
+  onDeleteSuccess?: () => void; // callback after delete
 }
 
-export default function LinkModal({ onClose, userId, categories, itemToEdit, onSuccess }: Props) {
+export default function LinkModal({
+  onClose,
+  userId,
+  categories,
+  itemToEdit,
+  onSuccess,
+  onDeleteSuccess,
+}: Props) {
   const [url, setUrl] = useState(itemToEdit?.url ?? "");
   const [title, setTitle] = useState(itemToEdit?.title ?? "");
-  const [categoryId, setCategoryId] = useState(itemToEdit?.categoryId ?? (categories[0]?.id || ""));
-  const [loading, setLoading] = useState(false);
+const [categoryId, setCategoryId] = useState(
+  (itemToEdit?.categoryId ?? categories[0]?.id) || ""
+);  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setUrl(itemToEdit?.url ?? "");
-    setTitle(itemToEdit?.title ?? "");
-    setCategoryId(itemToEdit?.categoryId ?? (categories[0]?.id || ""));
-  }, [itemToEdit, categories]);
+useEffect(() => {
+  setUrl(itemToEdit?.url ?? "");
+  setTitle(itemToEdit?.title ?? "");
+  setCategoryId((itemToEdit?.categoryId ?? categories[0]?.id) || "");
+}, [itemToEdit, categories]);
+
   const isEditMode = Boolean(itemToEdit);
 
   const isValidUrl = (str: string) => {
@@ -79,10 +89,29 @@ export default function LinkModal({ onClose, userId, categories, itemToEdit, onS
     }
   };
 
+  const handleDelete = async () => {
+    if (!itemToEdit) return;
+    if (!confirm("Are you sure you want to delete this link?")) return;
+
+    setLoading(true);
+    setError(null);
+    try {
+      await deleteLink(itemToEdit.id);
+      onDeleteSuccess?.();
+      onClose();
+    } catch (err: any) {
+      setError(err.message || "Failed to delete link.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="modal modal-open">
       <div className="modal-box max-w-lg">
-        <h3 className="font-bold text-lg mb-4">{isEditMode ? "Edit Link" : "Add New Link"}</h3>
+        <h3 className="font-bold text-lg mb-4">
+          {isEditMode ? "Edit Link" : "Add New Link"}
+        </h3>
         <form onSubmit={handleSubmit}>
           <input
             type="url"
@@ -122,13 +151,32 @@ export default function LinkModal({ onClose, userId, categories, itemToEdit, onS
             ))}
           </select>
           {error && <p className="text-red-500 mb-2">{error}</p>}
-          <div className="modal-action">
-            <button type="button" className="btn btn-ghost" onClick={onClose} disabled={loading}>
-              Cancel
+          <div className="modal-action flex justify-between">
+            <button
+              type="button"
+              className="btn btn-error btn-outline"
+              onClick={handleDelete}
+              disabled={loading || !isEditMode}
+              title={isEditMode ? "Delete Link" : "Delete unavailable"}
+            >
+              Delete
             </button>
-            <button type="submit" className={`btn btn-primary ${loading ? "loading" : ""}`}>
-              {isEditMode ? "Save" : "Add Link"}
-            </button>
+            <div className="flex space-x-2">
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={onClose}
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className={`btn btn-primary ${loading ? "loading" : ""}`}
+              >
+                {isEditMode ? "Save" : "Add Link"}
+              </button>
+            </div>
           </div>
         </form>
       </div>

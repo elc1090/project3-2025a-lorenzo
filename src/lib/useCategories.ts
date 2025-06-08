@@ -1,7 +1,7 @@
 // lib/useCategories.ts
 
 import { useState, useEffect } from "react";
-import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase"; // Your Firestore instance
 
 export default function useCategories(userId: string) {

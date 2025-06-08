@@ -6,7 +6,6 @@ import {
   getDocs,
   query,
   where,
-  orderBy,
   limit,
   startAfter,
   deleteDoc,
@@ -23,7 +22,7 @@ export async function getCategories(userId: string) {
   const q = query(
     collection(db, "categories"),
     where("userId", "==", userId),
-    orderBy("createdAt", "desc")
+    //orderBy("createdAt", "desc")
   );
 
   const snapshot = await getDocs(q);
@@ -50,7 +49,7 @@ export async function getLinks(
   let q = query(
     collection(db, "links"),
     where("userId", "==", userId),
-    orderBy("createdAt", "desc")
+    //orderBy("createdAt", "desc")
   );
 
   if (categoryId) {
@@ -58,7 +57,7 @@ export async function getLinks(
       collection(db, "links"),
       where("userId", "==", userId),
       where("categoryId", "==", categoryId),
-      orderBy("createdAt", "desc")
+      //orderBy("createdAt", "desc")
     );
   }
 

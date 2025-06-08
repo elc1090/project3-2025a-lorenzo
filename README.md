@@ -1,40 +1,51 @@
-# Projeto: Aplicação web com persistência de dados do lado do servidor
+# Projeto: Aplicação Web com Persistência de Dados do Lado do Servidor
 
-![Substitua a imagem ao lado por um screenshot do seu projeto](https://mdswanson.com/static/chops-ux-step-4.png "Screenshot do projeto")
+![screenshot](screenshot.png)
 
-Acesso: Substitua este texto pela URL de deploy do projeto
+Acesso: [https://linksync-573c8.web.app/](https://linksync-573c8.web.app/)
 
-### Desenvolvedores
-Substitua este texto pela identificação da dupla: nomes e cursos
+## Desenvolvedores
 
-### Nosso produto
+* **Lorenzo Facco Comunello** - [Sistemas de informação, UFSM](https://www.ufsm.br/cursos/graduacao/santa-maria/sistemas-de-informacao).
 
-Substitua este texto por uma descrição do que foi produzido: funcionalidades e relação com a temática "Compartilhamento"
+## Produto
 
+O LinkSync é uma aplicação web desenvolvida para armazenar e sincronizar links entre dispositivos, permitindo que os usuários organizem suas URLs de forma eficiente e intuitiva. A solução prioriza a facilidade de uso, e permite que links sejam adicionados, organizados em categorias, e removidos de forma rápida.
 
-### Desenvolvimento
+A aplicação tem como tema principal o **compartilhamento de informações**, sendo uma plataforma útil para organizar links de interesse de forma colaborativa.
 
-Substitua este texto por uma descrição do processo de desenvolvimento, explicando decisões tomadas e etapas do trabalho.
+## Desenvolvimento
 
-#### Tecnologias
+A aplicação foi construída utilizando Next.js com Firebase para persistência de dados. O Next.js foi escolhido para garantir o uso das melhores práticas em desenvolvimento de aplicações web, como renderização do lado do servidor (SSR), gerenciamento de rotas e integração com API.
 
-Substitua este trecho por uma lista detalhada de tecnologias usadas (tanto as básicas, como HTML e CSS, como as mais específicas, por exemplo algum framework, biblioteca, etc.):
-- ...
-- ...
-- 
+### Tecnologias
 
-#### Ambiente de desenvolvimento
+* **Next.js**: Framework React para construção de aplicações web com SSR (Server-Side Rendering) e funcionalidades PWA.
+* **Firebase**: Usado para persistência de dados no Firestore, autenticação com Firebase Auth e hospedagem.
+* **Tailwind CSS e daisyUI**: Utilizados para a estilização da aplicação de forma ágil e responsiva.
+* **React**: Biblioteca principal para construção de interfaces de usuário.
 
-Substitua este trecho por uma lista detalhada dos ambientes/ferramentas de desenvolvimento utilizadas (por exemplo, VS Code + alguma extensão, etc.)
-- ...
-- ...
+### Ambiente de desenvolvimento
 
-#### Referências e créditos
+* **VS Code**: Editor de código.
+* **Firebase Emulator Suite**: Para testar autenticação e Firestore localmente.
 
-Substitua este trecho por uma lista bem detalhada de todo material consultado para ajudar no projeto, por exemplo:  URL de templates usados, URL de icon kits usados, créditos para colegas que colaboraram, geradores de código (incluindo alguns prompts usados para o ChatGPT, se for o caso)
-- ...
-- ...
+### Referências e créditos
+
+* [Next.js Documentation](https://nextjs.org/docs)
+* [Firebase Documentation](https://firebase.google.com/docs)
+* [Tailwind CSS Documentation](https://tailwindcss.com/docs).
+
+#### Uso de IA
+
+Durante o desenvolvimento do projeto, foram utilizadas ferramentas de inteligência artificial, como ChatGPT e GitHub Copilot durante diversas etapas, principalmente:
+
+* Definição da pilha de tecnologias.
+* Desenvolvimento frontend.
+* Geração de código boilerplate para as funcionalidades do sistema.
+* Auxílio para compreensão de código e arquitetura do projeto.
+* Auxílio na detecção de problemas.
 
 ---
 
-Projeto entregue para a disciplina de [Desenvolvimento de Software para a Web](http://github.com/andreainfufsm/elc1090-2025a) em 2025a
+Projeto entregue para a disciplina de [Desenvolvimento de Software para a Web](http://github.com/andreainfufsm/elc1090-2025a) em 2025a.

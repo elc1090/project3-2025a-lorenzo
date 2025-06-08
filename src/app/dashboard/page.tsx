@@ -12,6 +12,8 @@ import CategoryModal from "@/components/CategoryModal";
 import LinkModal from "@/components/LinkModal";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Link } from "@/lib/types"; // Adjust the import based on your project structure
+import useCategoryActions from "@/lib/useCategoryActions";
+import useLinkActions from "@/lib/useLinkActions";
 
 export default function Dashboard() {
   const [categoryToEdit, setCategoryToEdit] = useState<{ id: string; name: string } | null>(null);
@@ -26,7 +28,8 @@ export default function Dashboard() {
     hasMore,
     fetchMore,
   } = useLinks(userId, selectedCategory ?? undefined);
-
+  const { deleteCategory } = useCategoryActions();
+  const { deleteLink } = useLinkActions();
   // Modals open/close state
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -59,25 +62,47 @@ export default function Dashboard() {
         <p>Loading user info...</p>
       ) : (
         <div className="flex h-screen max-w-7xl mx-auto p-4 gap-6">
-          <CategorySidebar
-            categories={categories}
-            loading={loadingCats}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-            onAddCategory={handleAddCategory}
-            onEditCategory={handleEditCategory}
-          />
+<CategorySidebar
+  categories={categories}
+  loading={loadingCats}
+  selectedCategory={selectedCategory}
+  onSelectCategory={setSelectedCategory}
+  onAddCategory={() => setShowCategoryModal(true)}
+  onEditCategory={(cat) => {
+    setCategoryToEdit(cat);
+    setShowCategoryModal(true);
+  }}
+  onDeleteCategory={async (cat) => {
+    if (window.confirm(`Delete category "${cat.name}"? This will move all its links to 'Uncategorized'.`)) {
+      try {
+        await deleteCategory(cat.id);
+      } catch (error: any) {
+        alert(`Failed to delete category: ${error.message || error}`);
+      }
+    }
+  }}
+/>
 
-          <LinksSection
-            links={links}
-            loading={loadingLinks}
-            hasMore={hasMore}
-            fetchMore={fetchMore}
-            onAddLink={handleAddLink}
-            onEditLink={handleEditLink}
-          />
-
-          {showCategoryModal && (
+<LinksSection
+  links={links}
+  loading={loadingLinks}
+  hasMore={hasMore}
+  fetchMore={fetchMore}
+  onAddLink={() => setShowLinkModal(true)}
+  onEditLink={(link) => {
+    setLinkToEdit(link);
+    setShowLinkModal(true);
+  }}
+  onDeleteLink={async (link) => {
+    if (window.confirm(`Delete link "${link.title || link.url}"?`)) {
+      try {
+        await deleteLink(link.id);
+      } catch (error: any) {
+        alert(`Failed to delete link: ${error.message || error}`);
+      }
+    }
+  }}
+/>          {showCategoryModal && (
             <CategoryModal
               onClose={() => {
                 setShowCategoryModal(false);
